@@ -1,10 +1,10 @@
-import express from "express";
-import userRoute from "./routes/user.js";
-import chatRoute from "./routes/chats.js";
-import { connectDB } from "./utils/features.js";
-import dotenv from "dotenv";
-import { errorMiddleware } from "./middlewares/error.js";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import express from "express";
+import { errorMiddleware } from "./middlewares/error.js";
+import chatRoute from "./routes/chats.js";
+import userRoute from "./routes/user.js";
+import { connectDB } from "./utils/features.js";
 
 dotenv.config({
   path: "./.env",
