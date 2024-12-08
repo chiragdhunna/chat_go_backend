@@ -4,7 +4,12 @@ import { Chat } from "../models/chat.js";
 import { emitEvent } from "../utils/features.js";
 import { ALERT, REFETCH_CHATS } from "../constants/events.js";
 import { getOtherMember } from "../lib/helper.js";
+import { User } from "../models/user.js";
 
+/*
+Creating new Group
+Now the Cookie will be used to check about the user creating the group
+*/
 const newGroupChat = TryCatch(async (req, res, next) => {
   const { name, members } = req.body;
 
@@ -31,6 +36,10 @@ const newGroupChat = TryCatch(async (req, res, next) => {
   });
 });
 
+/*
+Fetching all the chats
+Finds all chats where the requesting user is a member
+*/
 const getMyChats = TryCatch(async (req, res, next) => {
   const chats = await Chat.find({ members: req.user }).populate(
     "members",
@@ -61,6 +70,9 @@ const getMyChats = TryCatch(async (req, res, next) => {
   });
 });
 
+/*
+Gettings List of groups where the User is the Creator
+*/
 const getMyGroups = TryCatch(async (req, res, next) => {
   const chats = await Chat.find({
     members: req.user,
@@ -81,24 +93,55 @@ const getMyGroups = TryCatch(async (req, res, next) => {
   });
 });
 
-const getMembers = TryCatch(async (req, res, next) => {
-  const chats = await Chat.find({
-    members: req.user,
-    groupChat: true,
-    creator: req.user,
-  }).populate("members", "name avatar");
+/*
+Adding Member in a group
+*/
+const addMembers = TryCatch(async (req, res, next) => {
+  const { chatId, members } = req.body;
 
-  const groups = chats.map(({ members, _id, groupChat, name }) => ({
-    _id,
-    groupChat,
-    name,
-    avatar: members.slice(0, 3).map(({ avatar }) => avatar.url),
-  }));
+  if (!members || members.length < 1)
+    return next(new ErrorHandler("Please provide members", 400));
+
+  const chat = await Chat.findById(chatId);
+
+  if (!chat) return next(new ErrorHandler("Chat not found", 404));
+
+  if (chat.group)
+    return next(new ErrorHandler("This is not a group Chat", 400));
+
+  if (chat.creator.toString() != req.user.toString())
+    return next(new ErrorHandler("You are not allowed to add members", 403));
+
+  const allNewMembersPromise = members.map((i) => User.findById(i, "name"));
+
+  const allNewMembers = await Promise.all(allNewMembersPromise);
+
+  const uniqueMembers = allNewMembers
+    .filter((i) => !chat.members.includes(i._id.toString()))
+    .map((i) => i._id);
+
+  chat.members.push(...uniqueMembers);
+
+  if (chat.members.length > 100)
+    return next(new ErrorHandler("Group members limit reached", 400));
+
+  await chat.save();
+
+  const allUsersName = allNewMembers.map((i) => i.name).join(",");
+
+  emitEvent(
+    req,
+    ALERT,
+    chat.members,
+    `${allUsersName} has been added in the group`
+  );
+
+  emitEvent(req, REFETCH_CHATS, chat.members);
 
   return res.status(200).json({
     success: true,
-    groups,
+    message: "Members added successfully",
   });
 });
 
-export { newGroupChat, getMyChats, getMyGroups, getMembers };
+export { newGroupChat, getMyChats, getMyGroups, addMembers };

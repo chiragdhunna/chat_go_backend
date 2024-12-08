@@ -1,7 +1,7 @@
 import express from "express";
 import { isAuthenticated } from "../middlewares/auth.js";
 import {
-  getMembers,
+  addMembers,
   getMyChats,
   getMyGroups,
   newGroupChat,
@@ -16,6 +16,6 @@ app.use(isAuthenticated);
 app.post("/new", newGroupChat);
 app.post("/my", getMyChats);
 app.get("/my/groups", getMyGroups);
-app.post("/getMembers", getMembers);
+app.put("/getMembers", addMembers);
 
 export default app;
