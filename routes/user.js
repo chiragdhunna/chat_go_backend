@@ -28,6 +28,6 @@ app.get("/me", getMyProfile);
 
 app.post("/logout", logout);
 
-app.post("/searchUser", searchUser);
+app.get("/search", searchUser);
 
 export default app;
