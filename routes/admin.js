@@ -5,6 +5,7 @@ import {
   allChats,
   allMessages,
   allUsers,
+  getAdminData,
   getDashboardStats,
 } from "../controllers/admin.js";
 import { adminLoginValidator, validateHandler } from "../lib/validators.js";
@@ -20,7 +21,7 @@ app.get("/logout", adminLogout);
 
 app.use(adminOnly);
 
-app.get("/");
+app.get("/", getAdminData);
 
 app.get("/users", allUsers);
 app.get("/chats", allChats);

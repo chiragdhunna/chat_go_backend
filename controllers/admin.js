@@ -177,6 +177,12 @@ const adminLogout = TryCatch(async (req, res, next) => {
     });
 });
 
+const getAdminData = TryCatch(async (req, res, next) => {
+  return res.status(200).json({
+    admin: true,
+  });
+});
+
 export {
   allUsers,
   allChats,
@@ -184,4 +190,5 @@ export {
   getDashboardStats,
   adminLogin,
   adminLogout,
+  getAdminData,
 };
