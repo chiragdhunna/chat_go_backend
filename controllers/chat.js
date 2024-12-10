@@ -1,7 +1,3 @@
-import { TryCatch } from "../middlewares/error.js";
-import { ErrorHandler } from "../utils/utility.js";
-import { Chat } from "../models/chat.js";
-import { deleteFilesFromCloudnary, emitEvent } from "../utils/features.js";
 import {
   ALERT,
   NEW_ATTACHMENT,
@@ -9,8 +5,12 @@ import {
   REFETCH_CHATS,
 } from "../constants/events.js";
 import { getOtherMember } from "../lib/helper.js";
-import { User } from "../models/user.js";
+import { TryCatch } from "../middlewares/error.js";
+import { Chat } from "../models/chat.js";
 import { Message } from "../models/message.js";
+import { User } from "../models/user.js";
+import { deleteFilesFromCloudnary, emitEvent } from "../utils/features.js";
+import { ErrorHandler } from "../utils/utility.js";
 
 /*
 Creating new Group
@@ -232,14 +232,20 @@ Route for sending a attachment
 const sendAttachments = TryCatch(async (req, res, next) => {
   const { chatId } = req.body;
 
+  const files = req.files || [];
+
+  if (files.length < 1)
+    return next(new ErrorHandler("Please Upload Attachment", 400));
+
+  if (files.length > 5)
+    return next(new ErrorHandler("Files Can't be more than 5", 400));
+
   const [chat, me] = await Promise.all([
     Chat.findById(chatId),
     User.findById(req.user, "name"),
   ]);
 
   if (!chat) return next(new ErrorHandler("Chat not found", 404));
-
-  const files = req.files || [];
 
   if (files.length < 1)
     return next(new ErrorHandler("Please Provide attachments", 400));
@@ -415,15 +421,15 @@ const getMessages = TryCatch(async (req, res, next) => {
 });
 
 export {
-  newGroupChat,
+  addMembers,
+  deleteChat,
+  getChatDetails,
+  getMessages,
   getMyChats,
   getMyGroups,
-  addMembers,
-  removeMember,
   leaveGroup,
-  sendAttachments,
-  getChatDetails,
+  newGroupChat,
+  removeMember,
   renameGroup,
-  deleteChat,
-  getMessages,
+  sendAttachments,
 };

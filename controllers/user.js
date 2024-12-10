@@ -1,12 +1,12 @@
 import { compare } from "bcrypt";
+import { NEW_REQUEST, REFETCH_CHATS } from "../constants/events.js";
+import { getOtherMember } from "../lib/helper.js";
 import { TryCatch } from "../middlewares/error.js";
+import { Chat } from "../models/chat.js";
+import { Request } from "../models/request.js";
 import { User } from "../models/user.js";
 import { cookieOption, emitEvent, sendToken } from "../utils/features.js";
 import { ErrorHandler } from "../utils/utility.js";
-import { Chat } from "../models/chat.js";
-import { Request } from "../models/request.js";
-import { NEW_REQUEST, REFETCH_CHATS } from "../constants/events.js";
-import { getOtherMember } from "../lib/helper.js";
 
 // Create a new user and save it to the database and save token in cookie
 const newUser = TryCatch(async (req, res, next) => {
@@ -226,13 +226,13 @@ const getMyFriends = TryCatch(async (req, res, next) => {
 });
 
 export {
+  acceptFriendRequest,
+  getMyFriends,
+  getMyNotifications,
   getMyProfile,
   login,
   logout,
   newUser,
   searchUser,
   sendFriendRequest,
-  acceptFriendRequest,
-  getMyNotifications,
-  getMyFriends,
 };
