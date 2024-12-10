@@ -165,4 +165,24 @@ const getDashboardStats = TryCatch(async (req, res, next) => {
   });
 });
 
-export { allUsers, allChats, allMessages, getDashboardStats, adminLogin };
+const adminLogout = TryCatch(async (req, res, next) => {
+  return res
+    .status(200)
+    .cookie("chatgo-admin-token", "", {
+      ...cookieOption,
+      maxAge: 0,
+    })
+    .json({
+      success: true,
+      message: "Logged Out Successfully",
+    });
+});
+
+export {
+  allUsers,
+  allChats,
+  allMessages,
+  getDashboardStats,
+  adminLogin,
+  adminLogout,
+};
