@@ -1,3 +1,5 @@
+import { envMode } from "../app";
+
 const errorMiddleware = (err, req, res, next) => {
   err.message ||= "Internal Server error";
   err.statusCode ||= 500;
@@ -8,9 +10,15 @@ const errorMiddleware = (err, req, res, next) => {
     err.statusCode = 400;
   }
 
+  if (err.name === "CastError") {
+    const errorPath = err.path;
+    err.message = `Invalid Format of ${errorPath}`;
+    err.statusCode = 400;
+  }
+
   return res.status(err.statusCode).json({
     success: false,
-    message: err.message,
+    message: envMode === "DEVELOPMENT" ? err : err.message,
   });
 };
 
