@@ -4,6 +4,7 @@ import express from "express";
 import { errorMiddleware } from "./middlewares/error.js";
 import chatRoute from "./routes/chats.js";
 import userRoute from "./routes/user.js";
+import adminRoute from "./routes/admin.js";
 import { connectDB } from "./utils/features.js";
 import {
   createGroupChats,
@@ -32,6 +33,7 @@ app.use(cookieParser());
 
 app.use("/user", userRoute);
 app.use("/chat", chatRoute);
+app.use("/admin", adminRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
