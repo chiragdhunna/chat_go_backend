@@ -18,6 +18,8 @@ dotenv.config({
 
 const mongoUri = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
+export const adminSecretKey =
+  process.env.ADMIN_SECRET_KEY || "randomSecrectText";
 
 connectDB(mongoUri);
 

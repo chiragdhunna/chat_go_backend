@@ -5,11 +5,10 @@ import { Message } from "../models/message.js";
 import { ErrorHandler } from "../utils/utility.js";
 import jwt from "jsonwebtoken";
 import { cookieOption } from "../utils/features.js";
+import { adminSecretKey } from "../app.js";
 
 const adminLogin = TryCatch(async (req, res, next) => {
   const { secretKey } = req.body;
-
-  const adminSecretKey = process.env.ADMIN_SECRET_KEY || "randomSecrectText";
 
   const isMatch = secretKey === adminSecretKey;
 
