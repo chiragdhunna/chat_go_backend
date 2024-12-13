@@ -10,6 +10,7 @@ import { Server } from "socket.io";
 import { createServer } from "http";
 import { v4 as uuid } from "uuid";
 import cors from "cors";
+import { v2 as cloudinary } from "cloudinary";
 import {
   createGroupChats,
   createMessagesInAChat,
@@ -30,6 +31,12 @@ const adminSecretKey = process.env.ADMIN_SECRET_KEY || "randomSecrectText";
 const userSocketIDs = new Map();
 
 connectDB(mongoUri);
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // createSingleChats(10);
 // createGroupChats(10);

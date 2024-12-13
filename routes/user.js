@@ -32,7 +32,7 @@ app.use(isAuthenticated);
 
 app.get("/me", getMyProfile);
 
-app.post("/logout", logout);
+app.get("/logout", logout);
 
 app.get("/search", searchUser);
 
