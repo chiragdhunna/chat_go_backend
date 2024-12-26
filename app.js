@@ -91,6 +91,8 @@ io.on("connection", (socket) => {
       chat: chatId,
     };
 
+    console.log("Emitting", messageForRealTime);
+
     const membersSockets = getSockets(members);
     io.to(membersSockets).emit(NEW_MESSAGE, {
       chatId,
