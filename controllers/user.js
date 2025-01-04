@@ -43,7 +43,6 @@ const newUser = TryCatch(async (req, res, next) => {
 
 const login = TryCatch(async (req, res, next) => {
   const { username, password } = req.body;
-
   const user = await User.findOne({ username }).select("+password");
 
   if (!user) return next(new ErrorHandler("Invalid username or password", 404));
@@ -53,7 +52,7 @@ const login = TryCatch(async (req, res, next) => {
   if (!isMatch)
     return next(new ErrorHandler("Invalid username or password", 404));
 
-  sendToken(res, user, 200, "Welcome Back");
+  sendToken(res, user, 200, `Welcome Back ${user.name}`);
 });
 
 const getMyProfile = TryCatch(async (req, res, next) => {

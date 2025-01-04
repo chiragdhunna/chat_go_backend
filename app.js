@@ -16,7 +16,12 @@ import {
   createMessagesInAChat,
   createSingleChats,
 } from "./seeders/chat.js";
-import { NEW_MESSAGE, NEW_MESSAGE_ALERT } from "./constants/events.js";
+import {
+  NEW_MESSAGE,
+  NEW_MESSAGE_ALERT,
+  START_TYPING,
+  STOP_TYPING,
+} from "./constants/events.js";
 import { getSockets } from "./lib/helper.js";
 import { Message } from "./models/message.js";
 import { corsOption } from "./constants/config.js";
@@ -48,6 +53,8 @@ cloudinary.config({
 const app = express();
 const server = createServer(app);
 const io = new Server(server, { cors: corsOption });
+
+app.set("io", io);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -107,6 +114,22 @@ io.on("connection", (socket) => {
     } catch (e) {
       console.error("Error while storing message in DB in socket IO", e);
     }
+  });
+
+  socket.on(START_TYPING, ({ members, chatId }) => {
+    console.log("start typing", chatId);
+
+    const membersSockets = getSockets(members);
+
+    socket.to(membersSockets).emit(START_TYPING, { chatId });
+  });
+
+  socket.on(STOP_TYPING, ({ members, chatId }) => {
+    console.log("stop typing", chatId);
+
+    const membersSockets = getSockets(members);
+
+    socket.to(membersSockets).emit(STOP_TYPING, { chatId });
   });
 
   socket.on("disconnect", () => {
