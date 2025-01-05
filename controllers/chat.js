@@ -230,7 +230,7 @@ const leaveGroup = TryCatch(async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    message: "Member removed successfully",
+    message: "Leave Group Successfully",
   });
 });
 
