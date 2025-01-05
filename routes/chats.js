@@ -36,7 +36,7 @@ app.get("/my", getMyChats);
 
 app.get("/my/groups", getMyGroups);
 
-app.put("/getmembers", addMemberValidator(), validateHandler, addMembers);
+app.put("/addmembers", addMemberValidator(), validateHandler, addMembers);
 
 app.put(
   "/removemember",
