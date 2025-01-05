@@ -126,13 +126,6 @@ const getDashboardStats = TryCatch(async (req, res, next) => {
       Chat.countDocuments(),
     ]);
 
-  const stats = {
-    groupsCount,
-    usersCount,
-    messagesCount,
-    totalChatsCount,
-  };
-
   const today = new Date();
 
   const last7Days = new Date();
@@ -157,10 +150,17 @@ const getDashboardStats = TryCatch(async (req, res, next) => {
     messages[6 - index]++;
   });
 
+  const stats = {
+    groupsCount,
+    usersCount,
+    messagesCount,
+    totalChatsCount,
+    messagesChart: messages,
+  };
+
   return res.status(200).json({
     success: true,
     stats,
-    messages,
   });
 });
 
