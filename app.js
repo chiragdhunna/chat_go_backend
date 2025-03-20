@@ -1,5 +1,5 @@
+import "dotenv/config.js";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
 import express from "express";
 import { errorMiddleware } from "./middlewares/error.js";
 import chatRoute from "./routes/chats.js";
@@ -29,10 +29,7 @@ import { getSockets } from "./lib/helper.js";
 import { Message } from "./models/message.js";
 import { corsOption } from "./constants/config.js";
 import { socketAuthenticator } from "./middlewares/auth.js";
-
-dotenv.config({
-  path: "./.env",
-});
+import setupSwagger from "./utils/swagger.js"; // Import Swagger setup
 
 const mongoUri = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
@@ -71,6 +68,8 @@ app.use("/api/v1/admin", adminRoute);
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
+
+setupSwagger(app); // Setup Swagger
 
 io.use((socket, next) => {
   cookieParser()(socket.request, socket.request.res, async (err) => {
