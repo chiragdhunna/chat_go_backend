@@ -29,7 +29,7 @@ import { getSockets } from "./lib/helper.js";
 import { Message } from "./models/message.js";
 import { corsOption } from "./constants/config.js";
 import { socketAuthenticator } from "./middlewares/auth.js";
-import setupSwagger from "./utils/swagger.js"; // Import Swagger setup
+import { specs, swaggerUi } from "./utils/swagger.js"; // Import Swagger setup
 
 const mongoUri = process.env.MONGO_URI;
 const PORT = process.env.PORT || 3000;
@@ -69,7 +69,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-setupSwagger(app); // Setup Swagger
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 io.use((socket, next) => {
   cookieParser()(socket.request, socket.request.res, async (err) => {

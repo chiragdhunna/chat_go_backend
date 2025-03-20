@@ -1,6 +1,8 @@
 // filepath: c:\Users\chira\Desktop\Docs\Github Projects\chat_go_backend\utils\swagger.js
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import path from "path";
+const __dirname = path.resolve();
 
 const options = {
   definition: {
@@ -16,13 +18,13 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/*.js", "./controllers/*.js"], // files containing annotations as above
+  apis: [
+    "./routes/*.js",
+    "./controllers/*.js",
+    path.join(__dirname, "utils/swaggerModels.js"),
+  ], // files containing annotations as above
 };
 
-const swaggerSpec = swaggerJsdoc(options);
+const specs = swaggerJsdoc(options);
 
-const setupSwagger = (app) => {
-  app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-};
-
-export default setupSwagger;
+export { specs, swaggerUi };
