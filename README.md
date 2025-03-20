@@ -7,6 +7,7 @@ This repository contains the backend services for the Chat GO application, handl
 ## Features
 
 ### Core Functionalities
+
 - **User Authentication**: Secure login and registration.
 - **WebSocket Integration**: Real-time messaging, typing indicators, and notifications.
 - **Routes**: Comprehensive routing for users, chats, and admin operations.
@@ -14,24 +15,29 @@ This repository contains the backend services for the Chat GO application, handl
 - **Validations**: Robust input validation to ensure data integrity.
 - **Error Handling**: Graceful error management with proper status codes and messages.
 - **Seeding**: Utilities to seed users, groups, and messages for testing.
+- **Swagger API Documentation**: Interactive API documentation via Swagger UI.
 
 ---
 
 ## Tech Stack
 
 ### Backend
+
 - **Node.js**: Server-side runtime.
 - **Express.js**: For building APIs.
 - **Socket.IO**: For real-time communication.
 - **Cloudinary**: For media storage and management.
 - **MongoDB**: Database for storing user and chat data.
+- **Swagger UI**: API documentation and testing.
 
 ---
 
 ## Installation and Setup
 
 ### Prerequisites
+
 Ensure you have the following installed:
+
 - [Node.js](https://nodejs.org/) (v16 or later)
 - [MongoDB](https://www.mongodb.com/)
 
@@ -58,7 +64,7 @@ Ensure you have the following installed:
    MONGO_URI= YOUR_MONGO_URL
    PORT = 3000
    JWT_SECRET = YOUR_JWT_SECRET
-   ADMIN_SECRET_KEY = YOUR_ADMIN_SECRET_KEY 
+   ADMIN_SECRET_KEY = YOUR_ADMIN_SECRET_KEY
    NODE_ENV = DEVELOPMENT || PRODUCTION
    CLIENT_URL =
 
@@ -75,6 +81,11 @@ Ensure you have the following installed:
 
 5. **Access the Backend**
    The backend will run on `http://localhost:3000/` by default.
+
+6. **View API Documentation (Swagger UI)**
+   The API documentation can be accessed at:
+
+   [Swagger UI Docs](https://chat-go-backend.onrender.com/api/v1/docs/)
 
 ---
 
@@ -101,18 +112,22 @@ chat_go_backend/
 ## APIs
 
 ### Authentication
+
 - `POST /api/v1/user/register`: Register a new user.
 - `POST /api/v1/user/login`: Authenticate a user.
 
 ### User Management
+
 - `GET /api/v1/user/:id`: Fetch user profile.
 - `PUT /api/v1/user/:id`: Update user profile.
 
 ### Chat and Messaging
+
 - `POST /api/v1/chat/messages`: Send a message.
 - `GET /api/v1/chat/messages/:chatId`: Fetch chat messages.
 
 ### Admin
+
 - `GET /api/v1/admin/users`: Manage users.
 - `GET /api/v1/admin/chats`: Manage chat groups.
 
@@ -135,4 +150,3 @@ Contributions are welcome! Please follow these steps:
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ---
-
